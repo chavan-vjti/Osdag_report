@@ -1,0 +1,26 @@
+Work accomplished in an year;
+1) Video tutorials along with the scripts
+2) CAD Model for BothwayExtended
+3) CAD model of Splice Cover Plate
+4) CAD model of Truss:
+	a) Single angle
+	b) Double angle same side
+	c) Double angle opposite side
+	e) Channel truss connection
+5) 2D drawing for Truss Single angle and double angle both side
+5) IFC file of CAD Model
+
+Flow of data for report preparation
+1) How CAD model is built in Osdag (the flow of variables)
+2) IFC file generation and future objectives
+3) Provide hyperlinks to github files and google docs
+
+List of chapters
+1) CAD model generation
+	- Image of Pycharm with list of python files in Component report
+	- Start example by Fin plate shear connection
+2) IFC model generation
+	- Define what IFC is and its application
+	- Explain few available function in Connection.ifc
+	- State work done and future scope
+3) Way (hyperlinks) to many CAD files with detailed description
