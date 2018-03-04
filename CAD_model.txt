@@ -1,0 +1,2 @@
+1) CAD model generation in Osdag
+The geometric kernel used in Osdag is OpenCascade where PythonOCC is considered to be the wrapper over the kernel. The modeling scheme used in OpenCascade is Boundary Representation (BRep) with geometric pri itives as vertex, edge, face, body and prism. Operators used in BRep are called as Boolean operators with the boolean operations as add, subtract and union. This is what the fundamental used for CAD development in Osdag.

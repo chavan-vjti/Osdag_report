@@ -72,7 +72,7 @@
 \newcommand{\aps}{\reporttype{First Annual Progress Report}\approvaltype{Seminar Report}}
 
 \gdef\@rollnum{Unknown 00000000}    % Default is Unknown 00000000
-\gdef\@iitbdegree{Doctor of Philosophy}    % Default is Unknown Degree
+%\gdef\@iitbdegree{Doctor of Philosophy}    % Default is Unknown Degree
 \gdef\@doctype{annual work report}  % Default is a preliminary report
 \gdef\@department{(Unknown Department)} % Default is Unknown
 
@@ -92,7 +92,7 @@
       \mbox{}\\
       {\bf\expandafter\uppercase\expandafter{\LARGE\@title}} \\[\@thesistitlemedskip]
       {\large  {\emph \@doctype}} \\ 
-      {\large Submitted in partial fulfillment of the requirements} \\
+      %{\large Submitted in partial fulfillment of the requirements} \\
       %{\large for the degree of}\\[\@thesistitlemedskip]
             %\vspace*{-0.3in}
       {\large {\bf \@iitbdegree}} \\[\@thesistitlesmlskip]
