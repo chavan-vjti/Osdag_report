@@ -1,19 +1,25 @@
 1) CAD model generation in Osdag
-The geometric kernel used in Osdag is OpenCascade where PythonOCC is considered to be the wrapper over the kernel. The modeling scheme used in OpenCascade is Boundary Representation (BRep) with geometric pri itives as vertex, edge, face, body and prism. Operators used in BRep are called as Boolean operators with the boolean operations as add, subtract and union. This is what the fundamental used for CAD development in Osdag.
-******* Image of Osdag repository in Pycharm with Component directory extended *******
+The geometric kernel used in Osdag is OpenCascade where PythonOCC is considered to be the wrapper over the kernel. The modeling scheme used in OpenCascade is Boundary Representation (BRep) with geometric primitives as vertex, edge, face, body and prism. Operators used in BRep are called as Boolean operators with the boolean operations as add, subtract and union. This is what the fundamental used for CAD development in Osdag.
+******* Image of Osdag repository in PyCharm with Component directory extended *******
 As shown in the above figure, the python files in Component directory are backbone of CAD model in Osdag. Each python file in Component directory is a class file which returns the 3D CAD model of whatever dimensions passed to each python file.
 viz. in a case of plate.py which includes a class object as Plate and it takes in inputs as length (L), width(W) and thickness (T) to create the CAD model of plate. Therefore, whatever dimensions you pass on in to this (plate.py) class file, subsequent CAD model of plate would get generated. Similar logic is applied to rest of the class files.
 Now, we will look at how the data from one python file to another file passes to create 3D CAD model with one example.
-The CAD model in Osdag is displayed, iff the design is safe else the graphics window stays dark.
+The CAD model in Osdag is displayed, if and only if the design is safe else the graphics window stays dark.
 The generalized flow of variables/parameters is as discussed below;
-	i) When user clicks on Design button, all entered inputs are validated and component's dimensions are caluclated in calculation file. Once, this is done then compiler directs to function, def call_3DModel(self)
-	ii) Depending upon the safe or un-safe design it changes the graphics window color
+	i) When user clicks on Design button, all entered inputs are validated and component's dimensions are calculated in calculation file. Once, this is done then compiler directs to function, def call_3DModel(self)
+	ii) Depending upon the safe or unsafe design it changes the graphics window color
 	iii) In the same python file (Main_File) compiler moves to that function which contain the name of connectivity viz. ColFlangeBeamWeb, ColWebBeamWeb, ExtendedBothWay etc.
 	iv) This function basically initializes parameters for CAD model by taking UiObj (User inputs) and OutputObj (Output dictionary).
-	v) Next, the cursor moves to anothe python file with the same name as of connectivity name.
+	v) Next, the cursor moves to another python file with the same name as of connectivity name.
 	vi) This file creates CAD model by calling the respective class file from Component directory and returns the CAD model of individual component.
 The above mentioned steps we'll illustrate by taking an example of Both Way Extended End Plate in Moment Connection. The below mentioned steps will give you the complete CAD model including welds at appropriate places.
-	i) After user clicks on Design button in GUI, the debugger enters into the function named def design_btnclicked(self):
+	i) After user clicks on Design button in GUI, the debugger enters into the function named def design_btnclicked() in main file
 	ii) For CAD model creation, reach on line def display_3DModel(self,component, bgcolor)
-	iii) Depending upon safe or un-safe design the graphics window changes the background color. Consider, here as the design is safe.
-	iv) 
+	iii) Depending upon safe or unsafe design the graphics window changes the background color. Consider, here as the design is safe.
+	iv) Here, it calls the function named def createExtendedBothWays() for creating CAD model of connection.
+	v) In first step here, beam properties are assigned from database depending upon the beam cross section selected by user.
+	vi) Plate dimensions are pulled from output dictionary.
+	vii) Bolt dimensions are decided on size of diameter selected by user.
+	viii) For nut and bolt placement, it calls to NutBoltArray() class in nutBoltPlacement.py file
+	ix) After getting all the data and it displays each model by get_model() function.
+This is the generalized procedure followed for displaying CAD models. Debugging each file would really give insights of each command.

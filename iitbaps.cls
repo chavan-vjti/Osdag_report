@@ -72,7 +72,7 @@
 \newcommand{\aps}{\reporttype{First Annual Progress Report}\approvaltype{Seminar Report}}
 
 \gdef\@rollnum{Unknown 00000000}    % Default is Unknown 00000000
-%\gdef\@iitbdegree{Doctor of Philosophy}    % Default is Unknown Degree
+\gdef\@iitbdegree{}    % Default is Unknown Degree
 \gdef\@doctype{annual work report}  % Default is a preliminary report
 \gdef\@department{(Unknown Department)} % Default is Unknown
 

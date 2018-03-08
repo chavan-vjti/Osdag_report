@@ -1,0 +1,2 @@
+This chapter contains the hyperlinks to python files and description about each file.
+1) The CAD model of moment connection for both way extended end plate. click here for python file.
