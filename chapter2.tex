@@ -1,20 +1,48 @@
 \chapter{IFC development}
 \section{Introduction}
-The Industry Foundation Classes (IFC) data model is intended to describe building and construction industry data. It is a platform neutral, open file format specification that is not controlled by a single vendor or group of vendors. It is an object-based file format with a data model developed by buildingSMART (formerly the International Alliance for Interoperability, IAI) to facilitate interoperability in the architecture, engineering and construction (AEC) industry, and is a commonly used collaboration format in Building information modeling (BIM) based projects. The IFC model specification is open and available.[1] It is registered by ISO and is an official International Standard ISO 16739:2013.
+The Industry Foundation Classes (IFC) data model is intended to describe building and construction industry data. It is a platform neutral, open file format specification that is not controlled by a single vendor or group of vendors. It is an object-based file format with a data model developed by buildingSMART (formerly the International Alliance for Interoperability, IAI) to facilitate interoperability in the architecture, engineering and construction (AEC) industry, and is a commonly used collaboration format in Building information modeling (BIM) based projects. The IFC model specification is open and available. It is registered by ISO and is an official International Standard ISO 16739:2013.
 
 \section{IFC in Osdag}
-There are various IFC schema available and 3 IFC file formats as IFC-SPF, IFC-XML and IFC-ZIP.
-However, here I have focused on IFC2X3 scheme and IFC-SPF file format. SPF stand here as STEP Physical File.
-FreeCAD can be used as an IFC viewer to view the CAD model of IFC whereas any editor as Notepad++ is capable of reading the IFC file.
-To generate an IFC file of existing TopoDS CAD model, you need to have IFCOPENSHELL repository placed in site-packages. Don't try to install it through any python package manager.
-Typically, any IFC file if you open it in any editor, it consist of 2 sections as header and data section.
-Header section consist of general description about IFC file such as IFC IFC\_name, IFC\_Schema, which software is used to export the IFC file and so on.
-Whereas data section actually contains the coordinates to create the CAD model in IFC file format. The commands such as IFCDIRECTION, IFCCARTESIANPOINT, IFCAXIS2PLACEMENT3D are important to create an IFC CAD model.
+There are various IFC schema available and IFC file formats as IFC-SPF, IFC-XML and IFC-ZIP.
+However, here I have focused on IFC2X3 scheme and IFC-SPF file format. SPF stand here as \textbf{STEP Physical File}.
+FreeCAD can be used as an IFC viewer to view the CAD model of IFC whereas any editor as gedit, Notepad++ or sublime is capable of reading the IFC file.
+
+\section{IfcOpenShell}
+\begin{figure}[h]
+	\includegraphics[width=\linewidth]{IFC_Intro.jpg}
+	\caption{IFC file viewed in editor}
+\end{figure}
+The dependency required to generate IFC file is \textbf{IfcOpenShell.}
+To generate an IFC file of existing TopoDS CAD model, you need to have IFCOPENSHELL repository placed in site-packages. Don't try to install it through any python package manager such as conda or pip.
+Typically, any IFC file if you open it in any editor, it consist of 2 sections as header section and data section as shown in \textbf{Figure 2.1}.\\
+Header section consists of general description about IFC file such as IFC IFC\_name, IFC\_Schema utilized, which software is used to export the IFC file and so on.
+Whereas data section consists of vertices and IfcOpenShell geometric commands to create the model in IFC file format. The commands such as IFCDIRECTION, IFCCARTESIANPOINT, IFCAXIS2PLACEMENT3D are important to create an IFC CAD model.
+
+\section{IFC model for fin plate shear connection}
+Here is a sample code which creates a 3D IFC model of \href{https://github.com/chavan-vjti/IfcOpenShell/blob/master/Connection.py}{fin plate shear connection}, \textbf{Figure 2.2(a)} which includes CAD models of beam, column, finplate and weld models. Since all these models are planar so it's simple to get the vertices of each model and to generate the CAD model.
+\begin{figure}
+	\centering
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=0.9\linewidth]{fin_plate}
+		\caption{IFC model of fin plate connection}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[width=0.9\linewidth]{Nut}
+		\caption{IFC model of bolt head}
+
+	\end{subfigure}
+	\caption{IFC models in FreeCAD}
+
+\end{figure}
+
+
+
 
 \section{Issues and future scope}
-Here is a sample code which creates a 3D IFC file of \href{https://github.com/chavan-vjti/IfcOpenShell/blob/master/Connection.py}{fin plate connection} which includes CAD models of beam, column, finplate and weld models. Since all these models are planar so it's simple to get the vertices of each model and to generate the CAD model.
-The next challenge in completing the fin plate connection is to create the bolt placement. So, initially I started off by creating \href{https://github.com/chavan-vjti/IfcOpenShell/blob/master/Nut.py}{the bolt head}.The same code of bolt head can be used to create the nut. Therefore, to create the circular cross sections I raised \href{https://github.com/IfcOpenShell/IfcOpenShell/issues/300}{an issue over github} which initially started with how to create an IFC file and later discussion moved on over how to create the circular cross section.
-Therefore, as suggested by an IFC expert \href{https://github.com/aothms}{Thomas Krinjen} serialize and tesselate are the two available functions which are capable of creating cylindrical section. However, the area returned by any if these two functions is discrete in nature i.e. it's a tesselated area which will not work in our case. The cylindrical area should be smooth and and fine in nature. So, this approach didn't solve our problem.
-On deep research, I found that there is a function available in IfcOpenshell named IfcCircleProfileDef which takes in argument as radius and length of cylinder and returns the IFC model of cylinder. But the issue here is that this function IfcCircleProfileDef is available for C++ dependency of IfcOpenshell and not for python dependency. So, I have to find out a library of python which can call C++ function.
-\href{https://pypi.python.org/pypi/seasnake/0.0.0}{Seasnake} is a library availale for python which is capable of doing this task. I left working on IFC here. Now the next challenge would be to find a way by which we can implement seasnake library and would be able to call IfcCircleProfileDef function from C++ library of IfcOpenshell.
+The next challenge in completing the fin plate connection is to create the bolts and nuts placement. So, initially I started by creating \href{https://github.com/chavan-vjti/IfcOpenShell/blob/master/Nut.py}{the bolt head}, \textbf{Figure 2.2(b)}. The same code of bolt head can be used to create the nut. However, to create circular cross sections in IFC is bit challengin. Therefore, to create the circular cross sections I raised \href{https://github.com/IfcOpenShell/IfcOpenShell/issues/300}{an issue over github} which initially started with how to create an IFC file and later discussion moved on over how to create the circular cross section.
+Therefore, as suggested by an IFC expert \href{https://github.com/aothms}{Thomas Krinjen}, serialize and tesselate are the two available functions which are capable of creating cylindrical section. However, the area returned by any if these two functions is discrete in nature i.e. it's a tesselated or discrete area which will not work in our case. The required cylindrical area should be smooth and and fine in nature. So, this approach didn't solve our problem.\\
+On deep research, I found that there is a function available in IfcOpenshell named \textbf{IfcCircleProfileDef} which takes in argument as radius and length of cylinder and returns the IFC model of cylinder. But the issue here is that this function is available for C++ dependency of IfcOpenshell and not for python dependency. So, the next task to find out a library or python package which is capable of calling C++ functions.\\
+\href{https://pypi.python.org/pypi/seasnake/0.0.0}{Seasnake} is such a package availale for python which is capable of doing this task. I left working on IFC here. Now the next challenge would be to find a way by which we can implement seasnake library and would be able to call IfcCircleProfileDef function from C++ library of IfcOpenshell.\\
 You can find the IfcCircleProfileDef function, \href{https://github.com/IfcOpenShell/IfcOpenShell/blob/master/src/examples/profiles.cpp}{here}.You can also visit the forum on IFC,\href{https://sourceforge.net/p/ifcopenshell/discussion/1782717/thread/d09c83b7/?limit=25}{here}.

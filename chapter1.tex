@@ -1,36 +1,41 @@
+%\usepackage{graphicx}
 \chapter{CAD development}
 \section{Brief about CAD modelling}
-The geometric kernel used in Osdag is OpenCascade where PythonOCC is considered to be the wrapper over the kernel. The modeling scheme used in OpenCascade is Boundary Representation (BRep) with geometric primitives as vertex, edge, face, body and prism. Operators used in BRep are called as Boolean operators with the boolean operations as add, subtract and union. This is what the fundamental used for CAD development in Osdag.
+The geometric kernel used in Osdag is \textit{OpenCascade} where PythonOCC is considered to be the wrapper for the kernel. Every geometric kernel includes a modeling scheme. Similarly, the modeling scheme used in OpenCascade is Boundary Representation (BRep) which consists geometric primitives as vertex, edge, face, body and prism whereas operators used are boolean as add, subtract and union. This fundamental is used for CAD development in Osdag.
 
-\section{Flow of methods/variables for CAD model}
-As shown in the above figure, the python files in Component directory are backbone of CAD model in Osdag. Each python file in Component directory is a class file which returns the 3D CAD model of whatever dimensions passed to each python file.
-viz. in a case of plate.py which includes a class object as Plate and it takes in inputs as length (L), width(W) and thickness (T) to create the CAD model of plate. Therefore, whatever dimensions you pass on in to this (plate.py) class file, subsequent CAD model of plate would get generated. Similar logic is applied to rest of the class files.
-Now, we will look at how the data from one python file to another file passes to create 3D CAD model with one example.
+\section{Flow of functions/variables for CAD model}
+\begin{figure}[h]
+	\includegraphics[width=\linewidth]{CAD_chapter1.jpg}
+	\caption{Expanded view of Component directory}
+\end{figure}
+As shown in Fig. 1.1, the python files in Component directory are basically the backbone of CAD model in Osdag. Each python file in Component directory is a class file which returns the 3D CAD model of whatever dimensions you pass to each python file
+viz. in a case of \textit{plate.py} which includes a class object as \textit{Plate} and it takes inputs as length (L), width(W) and thickness (T) of plate to create its CAD model. Therefore, whatever required dimensions you pass on to these class files, subsequent CAD models would get generated. This is the basic idea behind creating CAD models in Osdag.\\
+Further, we will look at how the data from one python file to another file passes to create 3D CAD model with one example.
 The CAD model in Osdag is displayed, if and only if the design is safe else the graphics window stays dark.
 
 \section{Generalized flow of parameters}
 The generalized flow of variables/parameters is as discussed below;
 \begin{enumerate}
-	\item When user clicks on Design button, all entered inputs are validated and component's dimensions are calculated in calculation file. Once, this is done then compiler directs to function, \textit{def call\_3DModel(self)}
-	\item Depending upon the safe or unsafe design it changes the graphics window color
+	\item When user clicks on Design button, all entered inputs are validated and component's dimensions are calculated in calculation file. Once, all calculations are carried out, compiler directs to a function, \textit{def call\_3DModel(self)} in main file of a module.
+	\item Initially, depending upon the safe or unsafe design it changes the graphics window color
 	\item  In the same python file (Main\_File) compiler moves to that function which contain the name of connectivity viz. ColFlangeBeamWeb, ColWebBeamWeb, ExtendedBothWay etc.
-	\item This function basically initializes parameters for CAD model by taking UiObj (User inputs) and OutputObj (Output dictionary).
-	\item Next, the cursor moves to another python file with the same name as of connectivity name.
-	\item This file creates CAD model by calling the respective class file from Component directory and returns the CAD model of individual component.
-	
+	\item This function basically initializes parameters for CAD model by taking UiObj (input dictionary) and OutputObj (output dictionary).
+	\item Next, the compiler moves to another python file with the same name as of connectivity name.
+	\item This file creates CAD model by calling the respective class files from component repository and returns the CAD model of individual components.
 \end{enumerate}
+Above described steps would be best understood by applying breakpoint at \textit{def call\_3DModel(self)} in main file of a module and carrying out the step in debugging process.
 
 \section{CAD for moment connection of extended both way}
-The above mentioned steps we'll illustrate by taking an example of Both Way Extended End Plate in Moment Connection. The below mentioned steps will give you the complete CAD model including
-welds at appropriate places.
+The flow of parameters explaind at section 1.3, we'll illustrate it by taking an example of both way extended end plate module from moment connection. The below mentioned steps will display complete CAD model including welds at appropriate places in graphics window of Osdag.
 \begin{enumerate}
-	\item After user clicks on Design button in GUI, the debugger enters into the function named def design\_btnclicked() in main file
-	\item For CAD model creation, reach on line def display\_3DModel(self,component, bgcolor)
-	\item Depending upon safe or unsafe design the graphics window changes the background color. Consider, here as the design is safe.
-	\item  Here, it calls the function named def createExtendedBothWays() for creating CAD model of connection.
-	\item In first step here, beam properties are assigned from database depending upon the beam cross section selected by user.
+	\item Once user clicks on Design button from Input Dock, the debugger enters into the function named \textit{def design\_btnclicked()} in main file.
+	\item For creating CAD model, arrive at \textit{def display\_3DModel(self,component, bgcolor)}
+	\item Depending upon safe or unsafe design the background color in graphics window would change. Let's consider here as the design is safe.
+	\item  Further, it calls the function named \textit{def createExtendedBothWays()} for creating CAD model.
+	\item The first step here is to assign the beam properties from  sqlite database depending upon the beam cross section entered by user.
 	\item Plate dimensions are pulled from output dictionary.
 	\item Bolt dimensions are decided on size of diameter selected by user.
-	\item For nut and bolt placement, it calls to NutBoltArray() class in nutBoltPlacement.py file
-	\item After getting all the data and it displays each model by get\_model() function.
+	\item For nut and bolt placement, it calls to \textit{class NutBoltArray()} in \textit{nutBoltPlacement.py} file
+	\item After acquiring all the data, it displays each model by \textit{def get\_model()} function.
 \end{enumerate}
+
